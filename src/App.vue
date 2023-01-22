@@ -1,46 +1,59 @@
 <template>
-  <div class="container">
-    <router-view />
-  </div>
+  <router-view />
 </template>
 
 <script>
-
 export default {
-  name: "App"
+  name: "App",
 };
 </script>
 
-<style scoped lang="scss">
-#app {
-  .container {
-    font-family: "Gill Sans", sans-serif;
+<style lang="scss">
+$primary: #eabc2a;
+$secondary: #000;
+$lightGray: #f1f2f3;
+$darkGray: #222222;
+
+$gutter-x: 3rem;
+
+body {
+  margin: 0;
+  background-color: $lightGray;
+}
+
+.bg-header {
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(241, 242, 243, 1) 100%
+    ),
+    no-repeat center url(./assets/pexels-karolina-grabowska.jpg);
+  background-size: cover;
+  height: 60vh;
+}
+.container {
+  font-family: "Gill Sans", sans-serif;
   font-size: 16px;
   width: 100%;
-  padding-right: 1.5rem;
-  padding-left: 1.5rem;
+  padding-right: calc(var(--gutter-x) * .5);
+  padding-left: calc(var(--gutter-x) * .5);
   margin-right: auto;
   margin-left: auto;
+  max-width: 1320px;
+
+  // @media screen and (min-width: 1400px) {
+  //   max-width: 1320px;
+  // }
+  // @media screen and (min-width: 992px) {
+  //   max-width: 960px;
+  // }
+  // @media screen and (min-width: 576px) {
+  //   max-width: 540px;
+  // }
 }
 
-@media (min-width: 1400px) {
-  .container {
-    max-width: 1320px;
-  }
+.ca-gutter {
+  --gutter-x: 3rem;
 }
 
-.bg {
-  background: red;
-  height: 30vh;
-}
-
-.top-heading {
-  text-align: center;
-}
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-}
 </style>
