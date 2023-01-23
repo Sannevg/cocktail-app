@@ -1,6 +1,6 @@
 <template>
   <div class="bg-header">
-    <div class="container ca-gutter">
+    <div class="container">
       <div class="header">
         <h1 class="header-bigtext">Ready. Set. <span>Drink.</span></h1>
         <h3>Cocktails that will make you thristy</h3>
@@ -13,7 +13,7 @@
       </div>
     </div>
   </div>
-  <div class="container ca-gutter">
+  <div class="container">
     <div v-if="filteredDrinks.length" class="row">
       <div
         class="cocktail-list__card"
@@ -194,7 +194,7 @@ input[type="search"] {
   @media screen and (min-width: 992px) {
     padding: 100px 0;
   }
-  
+
   span {
     color: $primary;
   }

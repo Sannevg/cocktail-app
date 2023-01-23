@@ -1,6 +1,6 @@
 <template>
   <div class="bg-header">
-    <div class="container ca-gutter">
+    <div class="container">
       <button @click="goBack" class="go-back-btn">Go back</button>
       <div v-if="drink">
         <div class="cocktail-detail__items-top">
