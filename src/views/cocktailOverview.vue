@@ -14,7 +14,7 @@
     </div>
   </div>
   <div class="container ca-gutter">
-    <div v-if="drinks" class="row">
+    <div v-if="filteredDrinks.length" class="row">
       <div
         class="cocktail-list__card"
         v-for="drink in filteredDrinks"
@@ -35,17 +35,24 @@
         </router-link>
       </div>
     </div>
+    <div v-else>
+      <h3>No cocktail's found. Can you make me one?</h3>
+      <iframe
+        src="https://giphy.com/embed/LCByYaCXWmwCY"
+        width="500"
+        height="270"
+        frameBorder="0"
+      ></iframe>
+    </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   name: "cocktailOverview",
   data() {
     return {
-      drinks: null,
+      drinks: [],
       search: "",
     };
   },
@@ -65,7 +72,7 @@ export default {
   methods: {
     async getCocktails() {
       try {
-        const response = await axios.get(
+        const response = await this.axios.get(
           "https://www.thecocktaildb.com/api/json/v1/1/filter.php",
           {
             params: {
@@ -87,18 +94,17 @@ export default {
 </script>
 
 <style lang="scss">
-$primary: #eabc2a;
-$secondary: #000;
-$lightGray: #f1f2f3;
-$darkGray: #222222;
+@import "../variables";
 
 .cocktail-list {
   &__card {
     border-radius: 8px;
-    box-shadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
-      rgba(17, 17, 26, 0.1) 0px 0px 8px;
+    box-shadow: $boxShadow;
     position: relative;
     overflow: hidden;
+    flex-basis: 0;
+    flex-grow: 1;
+    max-width: 100%;
     &:hover .cocktail-list__image {
       transform: scale(1.05);
     }
@@ -137,18 +143,41 @@ $darkGray: #222222;
 .row {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
-  row-gap: 20px;
+  justify-content: space-evenly;
+  row-gap: 12px;
+  margin-right: -15px;
+  margin-left: -15px;
   margin-bottom: 50px;
 }
 
 .row > * {
-  width: 100%;
-  flex: 0 0 calc(20% - 16px);
+  flex: 0 0 45%;
+  display: flex;
+}
+
+@media screen and (min-width: 1400px) {
+  //larger screens
+  .row {
+    row-gap: 30px;
+    & > * {
+      flex: 0 0 18%;
+    }
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 1399px) {
+  // mobile +
+  .row {
+    row-gap: 20px;
+    & > * {
+      flex: 0 0 22%;
+      justify-content: center;
+    }
+  }
 }
 
 input[type="search"] {
-  width: 400px;
+  width: 100%;
   border: none;
   border-radius: 25px;
   padding: 12px 16px 12px 40px;
@@ -160,8 +189,12 @@ input[type="search"] {
   }
 }
 .header {
-  padding: 100px 0;
+  padding: 25px 0;
   width: 350px;
+  @media screen and (min-width: 992px) {
+    padding: 100px 0;
+  }
+  
   span {
     color: $primary;
   }

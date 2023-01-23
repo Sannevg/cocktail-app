@@ -12,16 +12,17 @@
             <img :src="drink.strDrinkThumb" alt="Image of cocktail" />
           </div>
           <div class="cocktail-detail__items-right">
-            <p v-if="ingredientsArray.length === null">
+            <p v-if="!ingredientsArray.length">
               No ingredients available
             </p>
-            <p
-              v-else
-              v-for="(ingredient, index) in ingredientsArray"
-              v-bind:key="index"
-            >
-            • {{ ingredient.measurement }} {{ ingredient.ingredient }}
-            </p>
+            <span>
+              <h4> Ingredients: </h4>
+              <p
+                v-for="(ingredient, index) in ingredientsArray"
+                v-bind:key="index">
+                • {{ ingredient.measurement }} {{ ingredient.ingredient }}
+              </p>
+            </span>
             <h4> Instructions: </h4>
             <p>{{ drink.strInstructions }}</p>
             <h4> Kind of glass: </h4>
@@ -34,8 +35,6 @@
 </template>
 
 <script>
-import axios from "axios";
-
 export default {
   name: "cocktailDetail",
   data() {
@@ -51,7 +50,7 @@ export default {
     async getCocktail() {
       const idDrink = this.$route.query.idDrink;
       try {
-        const response = await axios.get(
+        const response = await this.axios.get(
           "https://www.thecocktaildb.com/api/json/v1/1/lookup.php",
           {
             params: {
@@ -75,7 +74,8 @@ export default {
             ingredient: this.drink[key],
             measurement: this.drink["strMeasure" + index],
           };
-        });
+        })
+        .filter((item) => (item.ingredient && item.measurement));
     },
     goBack() {
       return this.$router.go(-1);
@@ -85,13 +85,7 @@ export default {
 </script>
 
 <style lang="scss">
-$primary: #eabc2a;
-$secondary: #000;
-$lightGray: #f1f2f3;
-$darkGray: #222222;
-
-$boxShadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
-      rgba(17, 17, 26, 0.1) 0px 0px 8px;
+@import '../variables';
 
 .go-back-btn {
   background-color: transparent;
@@ -109,13 +103,21 @@ $boxShadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
 .cocktail-detail {
   &__items-wrap {
     display: flex;
-    align-items: flex-start;
+    flex-direction: column;
     gap: 20px;
-    height: 100vh;
-    width: 75%;
+
+    @media screen and (min-width: 576px) {
+      flex-direction: row;
+      align-items: flex-start;
+      width: 75%;
+    }
   }
+
   &__items-top {
-    margin: 75px 0 25px;
+    margin: 25px 0;
+    @media screen and (min-width: 992px) {
+      margin: 75px 0 25px;
+    }
     .small-text {
       font-weight: 600;
       font-size: 0.9rem;
@@ -125,6 +127,10 @@ $boxShadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
   &__items-left {
     display: flex;
 
+    @media screen and (min-width: 576px) { 
+      width: 30%;
+    }
+
     img {
       width: 100%;
       height: auto;
@@ -133,12 +139,22 @@ $boxShadow: rgba(17, 17, 26, 0.05) 0px 1px 0px,
     }
   }
   &__items-right {
-    background-color: rgba(#fff,0.8);
+    background-color: rgba(#fff, 0.8);
     border-radius: 8px;
     box-shadow: $boxShadow;
     flex-direction: column;
-    width: 100%;
     padding: 25px;
+    margin-bottom: 20px;
+    width: 100%;
+
+    @media screen and (min-width: 576px) { 
+      width: 100%;
+    }
+
+
+    h4:first-child {
+      margin-top: 0;
+    }
   }
 
   &__top-item {

@@ -1,15 +1,23 @@
-import axios from 'axios'
-import { mount } from '@vue/test-utils'
-import cocktailOverview from './cocktailOverview.vue'
+import { shallowMount } from '@vue/test-utils';
+import cocktailOverview from '../../src/views/cocktailOverview.vue';
 
-jest.mock('axios')
-
-describe('cocktailOverview', () => {
-  let wrapper
-
+describe('TvShowsSearchComponent.vue', () => {
+  let wrapper;
   beforeEach(() => {
-    wrapper = mount(cocktailOverview)
-  })
+    wrapper = shallowMount(cocktailOverview, {
+      global: {
+        mocks: {
+          axios: {
+            get: async () => ({}),
+          }
+        }
+      }
+    });
+  });
+
+  it('renders component', () => {
+    expect(wrapper.exists()).toBe(true);
+  });
 
   test('should get list of cocktails', async () => {
     const mockData = {
@@ -26,11 +34,13 @@ describe('cocktailOverview', () => {
         }
       ]
     }
-    axios.get.mockResolvedValue({ data: mockData })
+
+    jest.spyOn(wrapper.vm.axios, 'get').mockReturnValue({ data: mockData});
 
     await wrapper.vm.getCocktails()
 
-    expect(axios.get).toHaveBeenCalledWith(
+    expect(wrapper.vm.axios.get).toHaveBeenCalled();
+    expect(wrapper.vm.axios.get).toHaveBeenCalledWith(
       'https://www.thecocktaildb.com/api/json/v1/1/filter.php',
       {
         params: {
@@ -41,5 +51,4 @@ describe('cocktailOverview', () => {
 
     expect(wrapper.vm.drinks).toEqual(mockData.drinks)
   })
-})
-
+});
