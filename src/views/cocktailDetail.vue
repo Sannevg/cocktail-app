@@ -4,7 +4,7 @@
       <button @click="goBack" class="go-back-btn">Go back</button>
       <div v-if="drink">
         <div class="cocktail-detail__items-top">
-          <p class="small-text">Cocktail</p>
+          <p class="small-text">{{ drink.strCategory }}</p>
           <h1>{{ drink.strDrink }}</h1>
         </div>
         <div class="cocktail-detail__items-wrap">
