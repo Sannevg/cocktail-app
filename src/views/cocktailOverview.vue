@@ -158,7 +158,7 @@ export default {
 @media screen and (min-width: 1400px) {
   //larger screens
   .row {
-    row-gap: 30px;
+    row-gap: 25px;
     & > * {
       flex: 0 0 18%;
     }
